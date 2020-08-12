@@ -5,6 +5,10 @@ object-receiver message
 
 message/methodname/selector are interachangable terms.
 
+selector: name of message
+message: selector with param values
+method: code found in class for responding to message
+
 ### primitive types
 
 Chars: preceeded by $ e.g. `h` is `$h`
@@ -47,7 +51,7 @@ e.g.
 `arrayobj size`
 `arrayobj isEmpty`
 `arrayobj at: 1` - **note: array indexes start at 1, not 0**
-
+`arrayobj at: 2 put: item`
 ### Messages
 
 Messages are sent to objects, which we usually refer to as "methods" on a class/instance.
@@ -208,6 +212,8 @@ The message `do:` is sent to a collection of objects (`Array`, `Set`, `OrderedCo
 #(11 38 3 -2 10) select: [:each | each > 10]. // #(11 38)
 ```
 
+Useful methods on orderedCollection: `do:`, `collect:`, `select:`, `add:`, `at:`, `at:put:`, `indexOf:`,`size`
+
 ### Object model
 
 Objects are instances of their class. Usually, we send the message #new to a class for creating an instance of this class.
@@ -260,6 +266,9 @@ The System Browser, also known as "Class Browser", is one of the key tools used 
 
 // insert system browser image here
 
+`Ctrl-S` for Accept some code written at the bottom.
+
+
 ### Using spotter
 
 The fastest (and probably the coolest) way to find a class is to use Spotter. Pressing `Shift+Enter` opens Spotter, a very powerful tool for finding classes, methods, and many other related actions.
@@ -271,5 +280,82 @@ The fastest (and probably the coolest) way to find a class is to use Spotter. Pr
 
 Pharo packages were implemented as "categories" (a group of classes). With the newer versions of Pharo, the term category is being deprecated, and replaced exclusively by package.
 
+### Classes
+```
+Object subclass: #Myclass
+	instanceVariableNames: ''
+	classVariableNames: ''
+	package: 'MyFirstPackage'
+```
+
+#### INtroducing a method/message in a class
+As soon as you click on protocol with "No Messages" written,
+you will get a template of a method/message in the bottom, write your code there 
+and accept.
+
+First method you should add is
+```
+initialize
+    super initialize
+```
+
+INstance variables are never accessible directly, so write setters and getter messages/methods
+Writing a getter method: usually use the message name same as instance variable name
+```
+greeting
+    ^ greeting
+```
+
+Setter can alos be named same as instance variable but it takes an argument (keyword based) and it has nothing to return. everything is mutable in class instances.
+```
+greeting: greetVal
+    greeting := greetVal
+```
+
+#### temporary variables within method
+
+method that has a temporary variable `ageDiff` within the method `ageInHumanYears`.
+```
+ageInHumanYears
+    | ageDiff |
+    ageDiff := 7.
+    ^ age * ageDiff.
+```
 
 
+### Workspace variables
+
+About variables defined in a playground, they can be introduced just by assignment i.e `:=`
+```
+tiger := VGTigerDemo new.
+tiger runDemo.
+
+greeting := 'hello world'
+```
+
+### Inheritance 
+Subclasses created by sending `subclass` message to class object.
+
+Equivalent to `Class Dog extends Animal` of java:
+```
+Animal subclass: #Dog
+	instanceVariableNames: ''
+	classVariableNames: ''
+	package: 'MyFirstPackage'
+```
+
+### Dictionary data structure
+
+```
+client1 := Dictionary new.
+
+client1 at: #name put: 'james';
+        at: #surname put: 'Bond';
+        at: #country put: 'UK';
+
+client2 := Dictionary newFrom {
+    #name -> 'Hercules'.
+    #surname -> 'Allmighty'.
+    #country -> 'Hellas'
+}
+```
